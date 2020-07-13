@@ -8,7 +8,7 @@ SELECT COUNT(*)
 
 /*QUESTION 2 - Write a query to look at just the first 10 rows. 
 	What company is associated with the job posting on the 10th row? 
-	ANSWER: ExonMobil*/
+	ANSWER: XTO Land Data Analyst*/
 
 SELECT *
 	FROM data_analyst_jobs
@@ -21,19 +21,7 @@ SELECT *
 --TN only
 SELECT COUNT(*)
 	FROM data_analyst_jobs
-	WHERE(location = 'TN');
-
---TN or KY
-SELECT COUNT(*)
-	FROM data_analyst_jobs
-	WHERE(location = 'TN')
-	OR(location = 'KY');
-
---TN or KY - Mary's code...  "IN" functions like an AND
-SELECT COUNT(*)
-	FROM data_analyst_jobs
 	WHERE location IN ('TN', 'KY');
-
 
 
 /*QUESTION 4 - How many postings in Tennessee have a star rating above 4?
@@ -70,26 +58,25 @@ SELECT location AS state, ROUND ( AVG(star_rating), 2 ) AS ave_rating
 
 /*QUESTION 7 - Select unique job titles from the data_analyst_jobs table. How many are there? 
 	ANSWER: 881 distinct */
-	
-SELECT COUNT ( DISTINCT(title) )
+
+SELECT COUNT (DISTINCT title)
 	FROM data_analyst_jobs;
+
 			
 
 /*QUESTION 8 - How many unique job titles are there for California companies?
 	ANSWER: 230 */
-
-SELECT COUNT ( DISTINCT(title) ) AS loc_titles_tally
+SELECT COUNT (DISTINCT title)
 	FROM data_analyst_jobs
-	WHERE(location = 'CA');
+	WHERE location = 'CA';
+	
 				
 
 /*QUESTION 9 - Find the name of each company and its average star rating for all companies 
 that have more than 5000 reviews across all locations. 
 How many companies are there with more that 5000 reviews across all locations?
 	CORRECT ANSWER: 40 companies have 5000 reviews */
-
 --THIS FIRST ONE IS MINE, AND GIVES WRONG ANSWER OF 71 COMPANIES. 
---NOT SURE WHAT I DID TO GET 41 (MY ORIGINAL ANSWER).
 SELECT
 	company, total_reviews
 	FROM 
@@ -115,7 +102,7 @@ ORDER BY count(location) DESC;
 	
 	NOTE:  Google answer is wrong becuase data ALREADY gives sum of review_count across all locations. By doing SUM
 	it overstates the review count.
-	Ways to avoid a sub-query - think about useing HAVING
+	Ways to avoid a sub-query - think about using HAVING
 	*/
 
 ---This is what I did, but it overstates review count. Leaving it to show how I did it the first time.
@@ -144,8 +131,8 @@ SELECT COUNT ( DISTINCT(title) )
 	FROM data_analyst_jobs
 	WHERE title ILIKE '%analyst%';
 
-/*TO SEE WHICH ARE MOST PREVELANT (interesting side trip) */
-SELECT DISTINCT TITLE, COUNT(title) as counts
+/*TO SEE WHICH ARE MOST PREVELANT (added count... interesting side trip) */
+SELECT DISTINCT title, COUNT(title) as counts
 	FROM data_analyst_jobs
 	WHERE title ILIKE '%analyst%'
 	GROUP BY title
@@ -177,9 +164,26 @@ SELECT DISTINCT title
 FROM data_analyst_jobs
 WHERE title NOT ILIKE '%analy%';
 
+------------------------------------------------
+--ADDITIONAL RESEARCH FOR PRACTICE 7/13/2020 ---
+------------------------------------------------
 
+--How many times does "Tableau" show up as skill? "Power BI"?
 
----------------------------------------------------------
----NEW EXERCISES, SIMPLE SUB-QUERIES---------------------
----------------------------------------------------------
+--Tableau has 471 listings
+SELECT DISTINCT title, skill
+	FROM data_analyst_jobs
+	WHERE skill ILIKE '%tableau%';
+	
+--Power BI has 86 listings (one has both Tableau and Power BI)
+SELECT DISTINCT title, skill
+	FROM data_analyst_jobs
+	WHERE skill ILIKE '%Power BI%';
+
+--Also, 48 rows have BOTH Tableau & Power BI as Skills
+SELECT DISTINCT title, skill
+	FROM data_analyst_jobs
+	WHERE skill ILIKE '%Power BI%' 
+	AND skill ILIKE '%tableau%';
+
 
